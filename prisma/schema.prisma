@@ -6,3 +6,20 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum WalletStatus {
+  MASTER
+  REGULAR
+  UNWINDING
+  ARCHIVED
+}
+
+model Wallet {
+  id         String       @id @default(cuid())
+  label      String
+  address    String       @unique
+  privateKey String
+  status     WalletStatus
+  colorIndex Int
+  createdAt  DateTime     @default(now())
+}

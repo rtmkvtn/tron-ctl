@@ -3,18 +3,20 @@
 interface TInputProps {
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
   placeholder?: string
   error?: boolean
   disabled?: boolean
   type?: string
 }
 
-export function TInput({ value, onChange, placeholder, error, disabled, type = 'text' }: TInputProps) {
+export function TInput({ value, onChange, onKeyDown, placeholder, error, disabled, type = 'text' }: TInputProps) {
   return (
     <input
       type={type}
       value={value}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       placeholder={placeholder}
       disabled={disabled}
       style={{
