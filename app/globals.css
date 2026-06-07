@@ -1,11 +1,79 @@
 @import "tailwindcss";
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* ── Reset ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; }
+
+/* ── Design tokens ──────────────────────────────────── */
+:root {
+  /* surfaces */
+  --bg:        #161a2e;
+  --bg-2:      #1d2238;
+  --stage-a:   #3a4170;
+  --stage-b:   #232843;
+  --surf:      #2a2f4a;
+  --surf-2:    #323858;
+  --surf-3:    #3a4166;
+  --ink:       #0c0e16;
+  --line:      rgba(255,255,255,.10);
+
+  /* wallet colour palette */
+  --w-blue:    #5b9bff;
+  --w-green:   #46d98a;
+  --w-amber:   #ffc24d;
+  --w-purple:  #b77fff;
+  --w-pink:    #ff7eb3;
+  --w-teal:    #3dd6c8;
+  --w-coral:   #ff7c5c;
+  --w-lime:    #a3e635;
+  --w-sky:     #38bdf8;
+  --w-rose:    #fb7185;
+
+  /* domain colours */
+  --energy:    #ffc24d;
+  --bandwidth: #5b9bff;
+  --usdt:      #46d98a;
+
+  /* status */
+  --ok:        #2fd36e;
+  --pending:   #ffb13d;
+  --critical:  #ff8a3d;
+  --fail:      #ff5d6c;
+
+  /* text levels */
+  --txt:       #ffffff;
+  --txt-2:     rgba(255,255,255,.74);
+  --txt-3:     rgba(255,255,255,.52);
+  --txt-faint: rgba(255,255,255,.36);
+
+  /* shadows */
+  --sh-sm: 3px 4px 0 rgba(6,8,16,.55);
+  --sh:    5px 6px 0 rgba(6,8,16,.55);
+  --sh-lg: 8px 11px 0 rgba(6,8,16,.55);
 }
 
-body {
-  margin: 0;
+/* ── Keyframes ──────────────────────────────────────── */
+@keyframes bob      { 0%,100%{ transform: translate(-50%,-50%); } 50%{ transform: translate(-50%,calc(-50% - 7px)); } }
+@keyframes bobY     { 0%,100%{ transform: translateY(-50%); } 50%{ transform: translateY(calc(-50% - 6px)); } }
+@keyframes floaty   { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-5px); } }
+@keyframes drift    { 0%,100%{ transform: translate(-50%,-50%) rotate(-5deg); } 50%{ transform: translate(calc(-50% - 6px),calc(-50% - 4px)) rotate(-8deg); } }
+@keyframes spin     { to { transform: translate(-50%,-50%) rotate(360deg); } }
+@keyframes spawnIn  { 0%{ transform: translate(-50%,-50%) scale(0); } 70%{ transform: translate(-50%,-50%) scale(1.15); } 100%{ transform: translate(-50%,-50%) scale(1); } }
+@keyframes popOut   { 0%{ transform: translate(-50%,-50%) scale(1); opacity: 1; } 40%{ transform: translate(-50%,-50%) scale(1.18); } 100%{ transform: translate(-50%,-50%) scale(0); opacity: 0; } }
+@keyframes tw       { 0%,100%{ opacity: .3; transform: scale(.7) rotate(0); } 50%{ opacity: 1; transform: scale(1.1) rotate(45deg); } }
+@keyframes pillbob  { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-2px); } }
+@keyframes travel   { from { left: 3px; } to { left: calc(100% - 25px); } }
+@keyframes fall     { to { transform: translateY(120vh) rotate(720deg); opacity: .9; } }
+@keyframes fade     { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop      { 0%{ transform: scale(.9); opacity: .35; } 70%{ transform: scale(1.03); } 100%{ transform: scale(1); opacity: 1; } }
+@keyframes slidein  { from { transform: translateX(48px); opacity: .25; } to { transform: none; opacity: 1; } }
+@keyframes dashmove { to { stroke-dashoffset: -30; } }
+@keyframes bdot     { 0%,100%{ box-shadow: 0 0 0 0 rgba(255,177,61,.6); } 50%{ box-shadow: 0 0 0 5px rgba(255,177,61,0); } }
+
+/* ── Reduced motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
