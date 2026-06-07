@@ -70,6 +70,12 @@ body { margin: 0; }
 @keyframes dashmove { to { stroke-dashoffset: -30; } }
 @keyframes bdot     { 0%,100%{ box-shadow: 0 0 0 0 rgba(255,177,61,.6); } 50%{ box-shadow: 0 0 0 5px rgba(255,177,61,0); } }
 
+/* ── Responsive shell helpers ───────────────────────── */
+@media (min-width: 768px) {
+  .md-nav  { display: flex !important; gap: 4px; }
+  .md-hidden { display: none !important; }
+}
+
 /* ── Reduced motion ─────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

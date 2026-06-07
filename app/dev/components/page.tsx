@@ -3,6 +3,7 @@ import type { IconName } from '@/src/shared/ui'
 import { ClientPreviews } from './ClientPreviews'
 import { OverlayPreviews } from './OverlayPreviews'
 import { ToastPreviews } from './ToastPreviews'
+import { ComplexPreviews } from './ComplexPreviews'
 
 const ALL_ICONS: IconName[] = [
   'wallet','crown','key','plus','archive','freeze','bolt','wave',
@@ -101,6 +102,10 @@ export default function DesignSystemPage() {
 
       <Section title="TAddr · THash · TQR · TSeg · TField · TCountdown">
         <ClientPreviews />
+      </Section>
+
+      <Section title="SunRays · Constellation · Tube · Shell">
+        <ComplexPreviews />
       </Section>
     </main>
   )
