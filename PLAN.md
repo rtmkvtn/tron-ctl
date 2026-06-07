@@ -725,20 +725,24 @@ volumes:
 
 Each phase is intended to be cuttable as a separate PRD. Phases are ordered to ship something runnable as early as possible and add capability outward.
 
-### Phase 0 — Foundation (scaffolding)
+### Phase 0 — Foundation (scaffolding) ✅
+
+**Status**: complete — [PRD](prds/phase-0-foundation.md) · [plan](plans/phase-0-foundation.md) · [commit a56cdc3](https://github.com/rtmkvtn/tron-ctl/commit/a56cdc3)
 
 **Goal**: empty repo → boots to a blank Next.js page in Docker behind Traefik.
 
 - Initialize Next.js 15 App Router + TypeScript with `pnpm`
-- Tailwind 4 + design tokens from `proto.css` (CSS variables + utilities)
+- Tailwind v4 CSS-first (postcss, `@import "tailwindcss"`)
 - Prisma + Postgres scaffold (no migrations yet)
-- Docker compose + Dockerfile
-- Traefik labels
+- Docker compose + Dockerfile (multi-stage, standalone output)
+- Traefik labels on `traefik-public` network
 - pino logger
 - `TRON_NETWORK` env var read at startup; log it
-- Healthcheck endpoint `/api/health`
+- Healthcheck endpoint `/api/health` → `{ status, network, db }`
 
-**Exit criteria**: `docker compose up` → `https://wallet.example.dev/` loads, returns 200, logs network name.
+**Exit criteria**: `docker compose up` → `https://${DOMAIN}/api/health` returns `{"status":"ok","network":"mainnet","db":"ok"}`; startup logs network name.
+
+> Also completed: `UBIQUITOUS_LANGUAGE.md` — canonical domain glossary.
 
 ### Phase 1 — Design system port
 
