@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useWallets } from '@/src/entities/wallet/api'
 import { GenerateModal } from '@/src/features/generate-wallet/ui/GenerateModal'
+import { WalletSheet } from '@/src/widgets/wallet-sheet/ui/WalletSheet'
 import { TAddr, TPill, TCard, TIcon, TCallout } from '@/src/shared/ui'
 import type { Wallet } from '@/src/entities/wallet/types'
 
@@ -213,6 +214,8 @@ export function WalletsPage() {
       )}
 
       <GenerateModal open={showGenerate} onClose={() => setShowGenerate(false)} />
+
+      <WalletSheet walletId={selectedId} onClose={() => setSelectedId(null)} />
     </div>
   )
 }

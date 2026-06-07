@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { TIcon } from './TIcon'
 import type { IconName } from './TIcon'
 
@@ -14,6 +14,7 @@ interface TBtnProps {
   onClick?: () => void
   children?: ReactNode
   type?: 'button' | 'submit'
+  style?: CSSProperties
 }
 
 const bgMap: Record<Variant, string> = {
@@ -29,7 +30,7 @@ const colorMap: Record<Variant, string> = {
   danger:  '#fff',
 }
 
-export function TBtn({ variant = 'primary', sm, lg, icon, iconPos = 'left', disabled, onClick, children, type = 'button' }: TBtnProps) {
+export function TBtn({ variant = 'primary', sm, lg, icon, iconPos = 'left', disabled, onClick, children, type = 'button', style }: TBtnProps) {
   const isGhost = variant === 'ghost'
   const size = lg ? { padding: '12px 24px', fontSize: 16 } : sm ? { padding: '5px 10px', fontSize: 12 } : { padding: '8px 16px', fontSize: 14 }
 
@@ -54,6 +55,7 @@ export function TBtn({ variant = 'primary', sm, lg, icon, iconPos = 'left', disa
         flexDirection: iconPos === 'right' ? 'row-reverse' : 'row',
         fontFamily: 'inherit',
         ...size,
+        ...style,
       }}
     >
       {icon && <TIcon n={icon} s={sm ? 13 : lg ? 18 : 15} />}
