@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 type CalloutVariant = 'info' | 'warn' | 'crit'
 
-interface TCalloutProps { variant: CalloutVariant; children: ReactNode }
+interface TCalloutProps { variant: CalloutVariant; children: ReactNode; style?: CSSProperties }
 
 const styles: Record<CalloutVariant, { borderColor: string; background: string }> = {
   info: { borderColor: 'var(--bandwidth)', background: 'rgba(91,155,255,.08)' },
@@ -10,7 +10,7 @@ const styles: Record<CalloutVariant, { borderColor: string; background: string }
   crit: { borderColor: 'var(--fail)',      background: 'rgba(255,93,108,.08)' },
 }
 
-export function TCallout({ variant, children }: TCalloutProps) {
+export function TCallout({ variant, children, style }: TCalloutProps) {
   const s = styles[variant]
   return (
     <div style={{
@@ -23,6 +23,7 @@ export function TCallout({ variant, children }: TCalloutProps) {
       color: 'var(--txt-2)',
       borderLeft: `3px solid ${s.borderColor}`,
       background: s.background,
+      ...style,
     }}>
       {children}
     </div>

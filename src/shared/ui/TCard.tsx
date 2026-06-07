@@ -5,12 +5,14 @@ interface TCardProps {
   flat?: boolean
   style?: CSSProperties
   className?: string
+  onClick?: () => void
 }
 
-export function TCard({ children, flat, style, className }: TCardProps) {
+export function TCard({ children, flat, style, className, onClick }: TCardProps) {
   return (
     <div
       className={className}
+      onClick={onClick}
       style={{
         background: 'var(--surf)',
         border: '3px solid var(--ink)',
