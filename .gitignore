@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# build
+dist/
+
+# env files — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# prisma generated
+prisma/generated/
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# logs
+*.log
+
+# Claude Code local config
+.claude/
+
+# design archive
+design.tar.gz

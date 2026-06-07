@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tron}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tron}
+      POSTGRES_DB: ${POSTGRES_DB:-tron_ctl_dev}
+    volumes:
+      - pg_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tron} -d ${POSTGRES_DB:-tron_ctl_dev}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg_data_dev:
