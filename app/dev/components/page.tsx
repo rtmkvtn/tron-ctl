@@ -2,6 +2,7 @@ import { TIcon, TBtn, TPill, TCard, TCallout } from '@/src/shared/ui'
 import type { IconName } from '@/src/shared/ui'
 import { ClientPreviews } from './ClientPreviews'
 import { OverlayPreviews } from './OverlayPreviews'
+import { ToastPreviews } from './ToastPreviews'
 
 const ALL_ICONS: IconName[] = [
   'wallet','crown','key','plus','archive','freeze','bolt','wave',
@@ -88,6 +89,10 @@ export default function DesignSystemPage() {
           <TCallout variant="warn"><TIcon n="alert" s={16} style={{ flexShrink: 0, color: 'var(--pending)' }} /><span>Warning callout — something to be aware of</span></TCallout>
           <TCallout variant="crit"><TIcon n="alert" s={16} style={{ flexShrink: 0, color: 'var(--fail)' }} /><span>Critical callout — action required</span></TCallout>
         </div>
+      </Section>
+
+      <Section title="Toasts">
+        <ToastPreviews />
       </Section>
 
       <Section title="Modal · Sheet">
