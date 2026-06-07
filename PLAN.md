@@ -30,7 +30,7 @@ This document is the canonical source for cutting feature-specific PRDs.
 | Deployment | Private VPS, behind existing Traefik reverse proxy, Docker-composed alongside other services |
 | Reachability | VPN/Traefik perimeter — no public auth, no login screen |
 | Backend | Next.js (App Router) + TypeScript |
-| Frontend | React 18+ inside Next.js, Server Components where they help |
+| Frontend | React 18+ inside Next.js, Server Components where they help; FSD (Feature-Sliced Design) architecture |
 | Database | PostgreSQL (dedicated container in the compose stack) |
 | ORM | Prisma |
 | TRON SDK | `tronweb` |
@@ -55,6 +55,56 @@ This document is the canonical source for cutting feature-specific PRDs.
 | Wallet metadata | Optional `label` (editable) per wallet, optional `note` per transaction (editable) |
 | Logging | pino (structured JSON) |
 | Resource price recompute | Per send, at preview time (no cache) |
+| Frontend architecture | Feature-Sliced Design (FSD) — see § 2.1 |
+
+---
+
+## 2.1 Frontend architecture — Feature-Sliced Design (FSD)
+
+All frontend code (components, hooks, API calls, types) follows [FSD](https://feature-sliced.design). The Next.js `app/` directory is routing-only (thin shell files); all FSD layers live under `src/`.
+
+### Layer structure
+
+```
+app/                    ← Next.js routing only: layout.tsx, page.tsx, route.ts
+src/
+├── app/                ← FSD app layer: providers, global init, store setup
+├── pages/              ← Page compositions imported by app/ routes
+│   ├── wallets/
+│   ├── master/
+│   ├── operations/
+│   └── archived/
+├── widgets/            ← Self-contained complex UI blocks (no direct API calls)
+│   ├── constellation/  ← Full star-map stage
+│   ├── wallets-list/   ← Grid/list of wallet cards
+│   ├── master-dashboard/
+│   ├── ops-table/
+│   └── wallet-sheet/   ← Slide-up detail sheet
+├── features/           ← User interactions / use-cases (each owns its modal/flow)
+│   ├── send-usdt/      ← 4-step SendFlow
+│   ├── generate-wallet/
+│   ├── freeze-trx/
+│   ├── delegate/
+│   ├── archive-wallet/
+│   ├── promote-wallet/
+│   └── reveal-key/
+├── entities/           ← Business models: type + UI slice + API slice
+│   ├── wallet/
+│   ├── operation/
+│   └── delegation/
+└── shared/             ← Reusable across all layers
+    ├── ui/             ← Design system: TBtn, TPill, TIcon, TCard, Modal, etc.
+    ├── api/            ← Fetch helpers, TronGrid client
+    ├── lib/            ← Formatters, utils (fmt, fmtK, timeAgo, shortAddr)
+    └── types/          ← Shared TypeScript types
+```
+
+### Rules
+
+- **Imports flow downward only**: `pages` may import from `widgets`, `features`, `entities`, `shared` — never upward.
+- **Slices are isolated**: a feature may not import from another feature; shared code goes to `entities` or `shared`.
+- **Next.js `app/` files are dumb**: they just re-export the matching `src/pages/` component and handle any RSC/metadata needs.
+- **`shared/ui` is the design system**: every primitive from `proto.css` + component vocabulary lives here. No ad-hoc inline styling in widgets or features.
 
 ---
 
