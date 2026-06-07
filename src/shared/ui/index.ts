@@ -1,1 +1,2 @@
-// barrel — populated as components are added
+export { TIcon } from './TIcon'
+export type { IconName } from './TIcon'
