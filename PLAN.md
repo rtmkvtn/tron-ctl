@@ -794,7 +794,9 @@ Each phase is intended to be cuttable as a separate PRD. Phases are ordered to s
 
 > Also completed: `UBIQUITOUS_LANGUAGE.md` — canonical domain glossary.
 
-### Phase 1 — Design system port
+### Phase 1 — Design system port ✅
+
+**Status**: complete — [PRD](prds/phase-1-design-system.md) · [commit 515b622](https://github.com/rtmkvtn/tron-ctl/commit/515b622)
 
 **Goal**: visual primitives match the prototype, in production-quality React components.
 
