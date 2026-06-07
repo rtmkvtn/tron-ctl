@@ -38,6 +38,13 @@ export function useGenerateWallet() {
   })
 }
 
+export async function fetchWalletKey(id: string): Promise<string> {
+  const r = await fetch(`/api/wallets/${id}/key`)
+  if (!r.ok) throw new Error('Failed to fetch key')
+  const data = await r.json()
+  return data.privateKey as string
+}
+
 export function useUpdateLabel() {
   const qc = useQueryClient()
   return useMutation<Wallet, Error, { id: string; label: string }>({

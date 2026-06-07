@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useWallet, useUpdateLabel } from '@/src/entities/wallet/api'
+import { useWallet, useUpdateLabel, fetchWalletKey } from '@/src/entities/wallet/api'
 import { TIcon, TPill, TAddr, TBtn, TQR } from '@/src/shared/ui'
 import type { Wallet } from '@/src/entities/wallet/types'
 
@@ -14,18 +14,19 @@ const WALLET_COLORS = [
 interface WalletSheetProps {
   walletId: string | null
   onClose: () => void
-  onShowKey?: (walletId: string) => void
 }
 
-function SheetContent({ wallet, onClose, onShowKey }: {
+function SheetContent({ wallet, onClose }: {
   wallet: Wallet
   onClose: () => void
-  onShowKey?: (id: string) => void
 }) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(wallet.label)
+  const [key, setKey] = useState<string | null>(null)
+  const [keyLoading, setKeyLoading] = useState(false)
+  const [keyCopied, setKeyCopied] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
-  const { mutate: updateLabel, isPending: saving } = useUpdateLabel()
+  const { mutate: updateLabel } = useUpdateLabel()
 
   useEffect(() => {
     setDraft(wallet.label)
@@ -41,6 +42,28 @@ function SheetContent({ wallet, onClose, onShowKey }: {
     updateLabel({ id: wallet.id, label: trimmed }, {
       onSuccess: () => setEditing(false),
     })
+  }
+
+  async function handleShowKey() {
+    setKeyLoading(true)
+    try {
+      const k = await fetchWalletKey(wallet.id)
+      setKey(k)
+    } finally {
+      setKeyLoading(false)
+    }
+  }
+
+  async function handleCopyKey() {
+    if (!key) return
+    await navigator.clipboard.writeText(key)
+    setKeyCopied(true)
+    setTimeout(() => setKeyCopied(false), 2000)
+  }
+
+  function handleHideKey() {
+    setKey(null)
+    setKeyCopied(false)
   }
 
   const createdAt = new Date(wallet.createdAt).toLocaleDateString('en-US', {
@@ -149,18 +172,51 @@ function SheetContent({ wallet, onClose, onShowKey }: {
           <TBtn
             variant="ghost"
             icon="key"
-            onClick={() => onShowKey?.(wallet.id)}
+            disabled={keyLoading}
+            onClick={key ? handleHideKey : handleShowKey}
           >
-            Show key
+            {key ? 'Hide key' : keyLoading ? '…' : 'Show key'}
           </TBtn>
           <TBtn variant="danger" disabled icon="archive">Archive</TBtn>
         </div>
+
+        {/* inline key reveal */}
+        {key && (
+          <div style={{
+            background: 'rgba(255,93,108,.08)',
+            border: '3px solid var(--fail)',
+            borderRadius: 12,
+            padding: '12px 14px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+          }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--fail)', textTransform: 'uppercase', letterSpacing: '.06em' }}>
+              Private key — keep secret
+            </div>
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              color: 'var(--txt)',
+              wordBreak: 'break-all',
+              lineHeight: 1.6,
+            }}>
+              {key}
+            </span>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <TBtn sm icon={keyCopied ? 'check' : 'copy'} onClick={handleCopyKey}>
+                {keyCopied ? 'Copied!' : 'Copy'}
+              </TBtn>
+              <TBtn sm variant="ghost" icon="x" onClick={handleHideKey}>Hide</TBtn>
+            </div>
+          </div>
+        )}
       </div>
     </>
   )
 }
 
-export function WalletSheet({ walletId, onClose, onShowKey }: WalletSheetProps) {
+export function WalletSheet({ walletId, onClose }: WalletSheetProps) {
   const reduced = useReducedMotion()
   const { data: wallet } = useWallet(walletId ?? '')
 
@@ -195,7 +251,7 @@ export function WalletSheet({ walletId, onClose, onShowKey }: WalletSheetProps) 
             }}
           >
             {wallet
-              ? <SheetContent wallet={wallet} onClose={onClose} onShowKey={onShowKey} />
+              ? <SheetContent wallet={wallet} onClose={onClose} />
               : <div style={{ padding: 24, color: 'var(--txt-3)', fontSize: 14 }}>Loading…</div>
             }
           </motion.div>
