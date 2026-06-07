@@ -812,7 +812,7 @@ Each phase is intended to be cuttable as a separate PRD. Phases are ordered to s
 
 **Goal**: generate, label, archive, restore wallets — purely DB-side.
 
-- Prisma schema migrations (Phase 5 schema, but no chain interactions yet)
+- Prisma schema migrations — incremental: only `Wallet` model + `WalletStatus` enum in this phase; remaining tables added in the phases that need them
 - `lib/tron/keys.ts` — deterministic local keypair generation (uses tronweb's address derivation but no RPC calls)
 - Routes: `POST /api/wallets/generate`, `GET /api/wallets`, `GET /api/wallets/{id}`, `PATCH /api/wallets/{id}`, `POST /api/wallets/{id}/archive`, `POST /api/wallets/{id}/restore`
 - Wallets-tab List view rendering real DB state (USDT balances stub at 0 until Phase 4)
