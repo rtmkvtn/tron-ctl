@@ -808,7 +808,9 @@ Each phase is intended to be cuttable as a separate PRD. Phases are ordered to s
 
 **Exit criteria**: visit `/dev/components`, side-by-side with `mobile.html` prototype, every primitive matches.
 
-### Phase 2 — Database & wallet generation (no chain yet)
+### Phase 2 — Database & wallet generation (no chain yet) ✅
+
+**Status**: complete — [PRD](https://github.com/rtmkvtn/tron-ctl/issues/9) · [commit c3f0655](https://github.com/rtmkvtn/tron-ctl/commit/c3f0655)
 
 **Goal**: generate, label, archive, restore wallets — purely DB-side.
 
